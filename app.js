@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 2707;
 
 //routes
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var products = require('./api/routes/products');
+var orders = require('./api/routes/orders');
 
 var app = express();
 
@@ -24,8 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', products);
+app.use('/orders', orders);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
