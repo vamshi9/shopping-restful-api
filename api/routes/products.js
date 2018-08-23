@@ -11,7 +11,12 @@ router.get('/products', (req, res, next) =>{
   res.render('index', { title: `This is procucts page!` });
 });
 router.post('/products', (req, res, next) =>{
-  res.render('index', { title: `This is procucts page handling post request!` });
+  const product = {
+    title: `Products`,
+    name: req.body.name,
+    price: req.body.price
+  };
+  res.render('index', product);
 });
 
 /* GET product id */

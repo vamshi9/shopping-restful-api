@@ -7,7 +7,12 @@ router.get('/', (req, res, next) =>{
 });
 
 router.post('/', (req, res, next) =>{
-  res.render('index', { title: `Let's order it babes: post request` });
+  const order = {
+    title: "Order",
+    productId : req.body.productId,
+    quantity : req.body.quantity
+  }
+  res.render('index',order);
 });
 
 router.post('/:orderId', (req, res, next) =>{
