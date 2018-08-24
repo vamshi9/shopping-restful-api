@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 if(process.env.NODE_ENV !== 'production'){
   require('dotenv').load();
 }
@@ -17,8 +18,14 @@ const uri =  process.env.MONGO_ATLAS_CLOUD;
 
 //mongoose connetion
 mongoose.connect(uri,{useNewUrlParser : true})
-  .then(result => console.log(result))
-  .catch(err => console.log(err));
+  //.then(result => console.log(result))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      message: 'Sorry there is some issue with database connection!',
+      error: err
+    });
+  });
 
 const app = express();
 

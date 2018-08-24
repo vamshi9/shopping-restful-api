@@ -12,15 +12,20 @@ router.get('/', (req, res, next) =>{
 /* GET products */
 router.get('/products', (req, res, next) =>{
   Product.find()
+    .select('name price _id')
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json(result);
+      //console.log(result);
+      const response = {
+        count: result.length,
+        products: result
+      }
+      res.status(200).json(response);
     })
     .catch( err => {
       console.log(err);
       res.status(500).json({error : err});
-    })
+    });
 });
 
 /*POST products */
@@ -36,10 +41,13 @@ router.post('/products', (req, res, next) =>{
     .save()
     .then(result => {
       console.log(result);
+      res.render('index', product);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({error:err});
+    });
     
-  res.render('index', product);
 });
 
 /* GET product id */
@@ -73,7 +81,7 @@ router.patch('/products/:productId', (req, res, next) =>{
     .catch(err => {
       console.log(err);
       res.status(500).json({error:err});
-    })
+    });
 });
 
 
@@ -83,8 +91,15 @@ router.delete('/products/:productId', (req, res, next) =>{
   Product.remove({_id: id})
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json(result);
+      //console.log(result);
+      res.status(200).json({
+        message: 'Product successfully deleted!',
+        request: {
+          type: 'POST',
+          url: 'localhost:3000/products',
+          body:result
+        }
+      });
     })
     .catch(err => {
       res.status(500).json({error:err});
