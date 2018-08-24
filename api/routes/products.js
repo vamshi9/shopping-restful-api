@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+const Product = require('../models/products');
 
 /* GET home page. */
 router.get('/', (req, res, next) =>{
@@ -10,23 +13,39 @@ router.get('/', (req, res, next) =>{
 router.get('/products', (req, res, next) =>{
   res.render('index', { title: `This is procucts page!` });
 });
+
+/*POST products */
 router.post('/products', (req, res, next) =>{
-  const product = {
-    title: `Products`,
+  
+  const product = new Product({
+    _id: new mongoose.Types.ObjectId(),
+    title: req.body.title,
     name: req.body.name,
     price: req.body.price
-  };
+  });
+  product
+    .save()
+    .then(result => {
+      console.log(result);
+    })
+    .catch(err => console.log(err));
+    
   res.render('index', product);
 });
 
 /* GET product id */
 router.get('/products/:productId', (req, res, next) =>{
   const id = req.params.productId;
-  if(id  === 'toothpaste'){
-    res.render('index',{title : `Yay! you've found your toothpaste`});
-  }else{
-    res.render('index',{title : `Sorry, item not found!`});
-  }
+  Product.findById(id)
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.render('index',{title: 'Yay, we found our product'});
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error:err});
+    });
 });
 
 /*PATCH & DELETE product */
