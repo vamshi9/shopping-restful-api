@@ -11,7 +11,16 @@ router.get('/', (req, res, next) =>{
 
 /* GET products */
 router.get('/products', (req, res, next) =>{
-  res.render('index', { title: `This is procucts page!` });
+  Product.find()
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch( err => {
+      console.log(err);
+      res.status(500).json({error : err});
+    })
 });
 
 /*POST products */
@@ -48,12 +57,38 @@ router.get('/products/:productId', (req, res, next) =>{
     });
 });
 
-/*PATCH & DELETE product */
+/*PATCH product */
 router.patch('/products/:productId', (req, res, next) =>{
-  res.render('index',{title : `Product Updated`});
+  const id = req.params.productId;
+  const updates = {};
+  for(const changes of req.body){
+    updates[changes.propName] = changes.value;
+  }
+  Product.update( {_id: id}, { $set: updates })
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error:err});
+    })
 });
+
+
+/*DELETE product */
 router.delete('/products/:productId', (req, res, next) =>{
-  res.render('index',{title : `Product deleted`});
+  const id = req.params.productId;
+  Product.remove({_id: id})
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({error:err});
+    });
 });
 
 
