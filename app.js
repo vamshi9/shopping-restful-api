@@ -26,6 +26,7 @@ mongoose.connect(uri,{useNewUrlParser : true})
       error: err
     });
   });
+mongoose.Promise = global.Promise;
 
 const app = express();
 
