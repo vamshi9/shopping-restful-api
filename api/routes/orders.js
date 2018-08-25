@@ -10,6 +10,7 @@ router.get('/', (req, res, next) =>{
   
   Order.find()
     .select('_id product quantity')
+    .populate('product','name price')
     .exec()
     .then(result => {
       console.log(result);
@@ -64,11 +65,12 @@ router.post('/', (req, res, next) =>{
   router.get('/:orderId', (req, res, next) =>{
     const id = req.params.orderId;
     Order.findById(id)
+    .populate('product')
     .exec()
     .then(order => {
       if(!order){
         return res.status(404).json({
-          message: 'Order not found'
+          message: 'Order not found' 
         })
       }
       res.status(200).json({
