@@ -41,6 +41,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads',express.static('uploads'))
 
 //Cross Origin Resource Sharing(CORS) -> Security issues
 app.use( (req,res,next) => {
