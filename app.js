@@ -14,9 +14,10 @@ const port = process.env.PORT;
 //routes
 const products = require('./api/routes/products');
 const orders = require('./api/routes/orders');
-const uri =  process.env.MONGO_ATLAS_CLOUD;
+const users = require('./api/routes/users');
 
 //mongoose connetion
+const uri =  process.env.MONGO_ATLAS_CLOUD;
 mongoose.connect(uri,{useNewUrlParser : true})
   //.then(result => console.log(result))
   .catch(err => {
@@ -60,6 +61,7 @@ app.use( (req,res,next) => {
 
 app.use('/', products);
 app.use('/orders', orders);
+app.use('/user',users);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
