@@ -97,23 +97,23 @@ exports.updateProduct = (req, res, next) => {
 exports.deleteProduct = (req, res, next) => {
     const id = req.params.productId;
     Product.remove({
-        _id: id
-      })
-      .exec()
-      .then(result => {
-        //console.log(result);
-        res.status(200).json({
-          message: 'Product successfully deleted!',
-          request: {
-            type: 'POST',
-            url: 'localhost:3000/products',
-            body: result
-          }
+            _id: id
+        })
+        .exec()
+        .then(result => {
+            //console.log(result);
+            res.status(200).json({
+                message: 'Product successfully deleted!',
+                request: {
+                    type: 'POST',
+                    url: 'localhost:3000/products',
+                    body: result
+                }
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
         });
-      })
-      .catch(err => {
-        res.status(500).json({
-          error: err
-        });
-      });
-  }
+}

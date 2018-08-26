@@ -6,7 +6,7 @@ const multer = require('multer');
 const checkAuth = require('../middleware/auth');
 const Product = require('../models/products');
 const productController = require('../controllers/products');
-const Multer = require('../controllers/multer') ;
+const Multer = require('../controllers/multer');
 
 
 /* GET home page. */
@@ -16,7 +16,7 @@ router.get('/', productController.homePage);
 router.get('/products', productController.getProducts);
 
 /*POST products */
-router.post('/products', checkAuth, Multer.upload.single('productImage') ,productController.createProducts);
+router.post('/products', checkAuth, Multer.upload.single('productImage'), productController.createProducts);
 
 /* GET product id */
 router.get('/products/:productId', productController.getProduct);

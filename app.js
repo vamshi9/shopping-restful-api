@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-if(process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
 const port = process.env.PORT;
@@ -17,8 +17,10 @@ const orders = require('./api/routes/orders');
 const users = require('./api/routes/users');
 
 //mongoose connetion
-const uri =  process.env.MONGO_ATLAS_CLOUD;
-mongoose.connect(uri,{useNewUrlParser : true})
+const uri = process.env.MONGO_ATLAS_CLOUD;
+mongoose.connect(uri, {
+    useNewUrlParser: true
+  })
   //.then(result => console.log(result))
   .catch(err => {
     console.log(err);
@@ -39,21 +41,23 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads',express.static('uploads'))
+app.use('/uploads', express.static('uploads'))
 
 //Cross Origin Resource Sharing(CORS) -> Security issues
-app.use( (req,res,next) => {
-  res.header("Access-Control-Allow-Origin","*");
-  
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+
   res.header(
     "Access-Control-Allow-Origin",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  if(req.method === 'OPTIONS'){
-    res.header('Access-Control-Allow-Origin','PUT, POST, DELETE, PATCH');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', 'PUT, POST, DELETE, PATCH');
     res.status(200).json({});
   }
   next()
@@ -61,7 +65,7 @@ app.use( (req,res,next) => {
 
 app.use('/', products);
 app.use('/orders', orders);
-app.use('/user',users);
+app.use('/user', users);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -95,7 +99,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, (err) => {
-  if(err){
+  if (err) {
     console.log(err);
   }
   console.log(`Server is running on port ${port}`);
