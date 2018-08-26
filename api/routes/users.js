@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require('../models/user');
 const userController = require('../controllers/user');
+const checkAuth = require('../middleware/auth');
 
 /* GET users listing. */
-router.get('/', userController.getUser);
+router.get('/', checkAuth, userController.getUser);
 
 /*POST signup request */
-router.post('/signup', userController.signup);
+router.post('/signup' ,userController.signup);
 
 /*POST login request */
-router.post('/login', userController.login);
+router.post('/login' ,userController.login);
 
 /*DELETE User request*/
-router.delete('/:userId', userController.userDetails);
+router.delete('/:userId', checkAuth ,userController.userDetails);
 
 module.exports = router;
