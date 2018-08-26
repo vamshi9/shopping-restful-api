@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-/*POST user request */
+/*POST signup request */
 router.post('/signup', (req,res,next) => {
   
   User.find({email: req.body.email})
@@ -62,6 +62,40 @@ router.post('/signup', (req,res,next) => {
       console.log(err);
       res.status(500).json({error: err});
     });  
+});
+
+/*POST login request */
+router.post('/login', (req,res,next) => {
+  User.find({email: req.body.email})
+    .exec()
+    .then(user => {
+      if(user.length < 1){
+        return res.status(401).json({
+          message: 'You are not register to enter, bitch!'
+        });
+      }
+      bcrypt.compare(req.body.password,user[0].password, (err,result) => {
+        if(err){
+          return res.status(401).json({
+            message: 'Authentication failed'
+          });
+        }
+        if(result){
+          return res.status(200).json({
+            message: 'Authentication Successfull, mama!'
+          });
+        }
+        res.status(401).json({
+          message: 'Authentication failed, type again da!'
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Something went wrong buddy, try again!'
+      });
+    });
 });
 
 /*DELETE User request*/
